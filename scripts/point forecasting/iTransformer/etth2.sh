@@ -1,7 +1,7 @@
 ### ETTh2 Dataset ###
 model='iTransformer'
 checkpoints='./checkpoints/all/'
-root_path='/home/CICDTSM_BSZF/Datas/ETT-small/'
+root_path='./dataset/ETT-small/'
 data_path='ETTh2.csv'
 model_id='iTransformer_ETTh2_96_192'
 dataset='ETTh2'
@@ -51,4 +51,5 @@ python -u cond_model_main.py \
     --learning_rate $learning_rate \
     --lradj $lradj \
     --delta $delta \
+    --gpu 4
     >>logs/iTrans_M_ETTh2_ALL.log

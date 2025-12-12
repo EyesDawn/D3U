@@ -182,7 +182,9 @@ class Exp_Long_Term_Forecast(Exp_Basic):
             adjust_learning_rate(optimizer=model_optim, epoch=epoch + 1, args=self.args)
 
         best_model_path = path + '/' + 'checkpoint.pth'
-        self.model.load_state_dict(torch.load(best_model_path))
+        state_dict = torch.load(best_model_path, map_location='cpu')
+        self.model.load_state_dict(state_dict)
+        self.model.to(self.device)
 
         return self.model
 
