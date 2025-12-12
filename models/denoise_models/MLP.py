@@ -16,7 +16,7 @@ import numpy as np
 import torch.nn.functional as F
 import argparse
 
-# from model9_NS_transformer.ns_layers.RevIN import RevIN
+# from models.ns_layers.RevIN import RevIN
 
 
 

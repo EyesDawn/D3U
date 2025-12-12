@@ -3,7 +3,7 @@ seq_len=96
 pred_len=192
 model_name=SVQ
 
-root_path_name='../../../dataset/weather/'
+root_path_name='./dataset/weather/'
 data_path_name=weather.csv
 model_id_name=weather
 data_name='custom'
@@ -11,7 +11,7 @@ data_name='custom'
 random_seed=2021
 
 
-python -u ../../../runner.py \
+python -u ./runner.py \
         --is_training \
         --seed $random_seed \
         --root_path $root_path_name \
@@ -53,6 +53,6 @@ python -u ../../../runner.py \
         --codebook_size 256 \
         --type_sample 'DPM_solver'\
         --DPMsolver_step 20\
-        --gpu 0 \
+        --gpu 4 \
         --parameterization "x_start"\
         --bias \

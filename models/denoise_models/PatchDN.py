@@ -10,7 +10,7 @@ import argparse
 from einops import repeat
 from .dm_layers.embedders import Time_series_PatchEmbed
 from .dm_layers.PatchTST_layers import positional_encoding
-# from model9_NS_transformer.ns_layers.RevIN import RevIN
+# from models.ns_layers.RevIN import RevIN
 
 def modulate(x, shift, scale):
     return x * (1 + scale.unsqueeze(1)) + shift.unsqueeze(1)

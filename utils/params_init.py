@@ -47,7 +47,7 @@ def get_args():
     parser.add_argument('--checkpoints', type=str, default='./checkpoints/', help='location of model checkpoints')
     parser.add_argument('--pretrain_checkpoints', type=str, default='./pretrain_checkpoints/', help='location of condition model checkpoints')
     # CART related args
-    parser.add_argument('--diffusion_config_dir', type=str, default='./model9_NS_transformer/configs/toy_8gauss.yml',
+    parser.add_argument('--diffusion_config_dir', type=str, default='./models/configs/toy_8gauss.yml',
                         help='')
     
     # forecasting task
