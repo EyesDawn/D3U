@@ -1,0 +1,14 @@
+.DS_Store
+
+dataset/
+checkpoints/
+pretrain_checkpoints/
+logs/
+results/
+outputs/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
