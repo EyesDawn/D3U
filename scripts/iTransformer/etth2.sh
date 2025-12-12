@@ -3,13 +3,13 @@ seq_len=96
 label_len=48
 pred_len=192
 model_name=iTransformer
-root_path_name=/home/D3U-main/dataset/ETT-small/
+root_path_name=./dataset/ETT-small/
 data_path_name=ETTh2.csv
 model_id_name=ETTh2
 data_name=ETTh2
 
 random_seed=2021
-cd /home/D3U-main
+
 python -u main.py \
         --is_training \
         --seed $random_seed \
@@ -52,8 +52,8 @@ python -u main.py \
         --codebook_size 256 \
         --type_sample 'DPM_solver'\
         --DPMsolver_step 20\
-        --gpu 0 \
+        --gpu 4 \
         --parameterization "x_start"\
         --bias \
-        >>./logs/D3U/iTransformer/ETTh2.log
+        2>&1 | tee -a ./logs/D3U/iTransformer/ETTh2.log
 
