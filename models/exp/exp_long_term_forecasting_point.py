@@ -96,7 +96,12 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         vali_data, vali_loader = self._get_data(flag='val')
         test_data, test_loader = self._get_data(flag='test')
 
-        path = os.path.join(self.args.checkpoints, setting)
+        path = os.path.join('./pretrain_checkpoints', self.args.model)
+        if self.args.decomposition:
+            path = os.path.join(path, 'decomposition', self.args.data, str(self.args.pred_len))
+        else:
+            path = os.path.join(path, 'all', self.args.data, str(self.args.pred_len))
+
         if not os.path.exists(path):
             os.makedirs(path)
 
@@ -192,7 +197,12 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         test_data, test_loader = self._get_data(flag='test')
         if test:
             print('loading model')
-            self.model.load_state_dict(torch.load(os.path.join(self.args.checkpoints + setting, 'checkpoint.pth')))
+            path = os.path.join('./pretrain_checkpoints', self.args.model)
+            if self.args.decomposition:
+                path = os.path.join(path, 'decomposition', self.args.data, str(self.args.pred_len))
+            else:
+                path = os.path.join(path, 'all', self.args.data, str(self.args.pred_len))
+            self.model.load_state_dict(torch.load(os.path.join(path, 'checkpoint.pth')))
 
         # test_loss_MSE = 0.0
         # test_loss_MAE = 0.0

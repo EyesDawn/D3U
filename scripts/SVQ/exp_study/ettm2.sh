@@ -2,13 +2,13 @@
 seq_len=96
 pred_len=192
 model_name=SVQ
-root_path_name=../../../dataset/ETT-small/
+root_path_name=./dataset/ETT-small/
 data_path_name=ETTm2.csv
 model_id_name=ETTm2
 data_name=ETTm2
 
 random_seed=2021
-python -u ../../../runner.py \
+python -u ./runner.py \
         --is_training \
         --seed $random_seed \
         --root_path $root_path_name \

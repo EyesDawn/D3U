@@ -155,8 +155,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    args.use_gpu = True if torch.cuda.is_available() and args.use_gpu else False
-
     if args.seed == -1:
         fix_seed = np.random.randint(2147483647)
     else:
@@ -168,6 +166,7 @@ if __name__ == '__main__':
     torch.manual_seed(fix_seed)
     np.random.seed(fix_seed)
 
+    args.use_gpu = True if torch.cuda.is_available() and args.use_gpu else False
     if args.use_gpu:
         if args.use_multi_gpu:
             args.devices = args.devices.replace(' ', '')
@@ -177,8 +176,7 @@ if __name__ == '__main__':
         else:
             torch.cuda.set_device(args.gpu)
 
-    print('Args in experiment:')
-    print(args)
+    print(f'Args in experiment :\n {args}')
 
     Exp = Exp_Main
 
@@ -222,25 +220,25 @@ if __name__ == '__main__':
     else:
         ii = 0
         setting = '{}_ts{}_{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_dt{}_{}_{}'.format(
-                                                                                                      args.decomposition,
-                                                                                                      args.timesteps,
-                                                                                                      args.denoise_model,
-                                                                                                      args.model_id,
-                                                                                                      args.model,
-                                                                                                      args.data_name,
-                                                                                                      args.features,
-                                                                                                      args.seq_len,
-                                                                                                      args.label_len,
-                                                                                                      args.pred_len,
-                                                                                                      args.d_model_c,
-                                                                                                      args.n_heads_c,
-                                                                                                      args.e_layers_c,
-                                                                                                      args.d_layers_c,
-                                                                                                      args.d_ff,
-                                                                                                      args.factor_c,
-                                                                                                      args.embed,
-                                                                                                      args.distil,
-                                                                                                      args.des, ii)
+            args.decomposition,
+            args.timesteps,
+            args.denoise_model,
+            args.model_id,
+            args.model,
+            args.data_name,
+            args.features,
+            args.seq_len,
+            args.label_len,
+            args.pred_len,
+            args.d_model_c,
+            args.n_heads_c,
+            args.e_layers_c,
+            args.d_layers_c,
+            args.d_ff,
+            args.factor_c,
+            args.embed,
+            args.distil,
+            args.des, ii)
 
         exp = Exp(args)  # set experiments
         print('>>>>>>>testing : {}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'.format(setting))
