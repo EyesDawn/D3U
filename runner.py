@@ -6,7 +6,7 @@ import numpy as np
 import setproctitle
 
 if __name__ == '__main__':
-    setproctitle.setproctitle('D3U_thread')
+    setproctitle.setproctitle('D3U_runner')
 
     parser = argparse.ArgumentParser(
         description='D3U-Framework-for-Probabilistic-MTS-Forecastingg',

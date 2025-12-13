@@ -202,7 +202,8 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                 path = os.path.join(path, 'decomposition', self.args.data, str(self.args.pred_len))
             else:
                 path = os.path.join(path, 'all', self.args.data, str(self.args.pred_len))
-            self.model.load_state_dict(torch.load(os.path.join(path, 'checkpoint.pth')))
+            self.model.load_state_dict(torch.load(os.path.join(path, 'checkpoint.pth'), map_location='cpu'))
+            self.model.to(self.device)
 
         # test_loss_MSE = 0.0
         # test_loss_MAE = 0.0
@@ -300,13 +301,10 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         mae, mse, rmse, mape, mspe = metric(preds, trues)
         # print('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
         print('mse:{}, mae:{}'.format(mse, mae))
-        f = open("result_long_term_forecast.txt", 'a')
-        f.write(setting + "  \n")
-        # f.write('mse:{}, mae:{}, dtw:{}'.format(mse, mae, dtw))
-        f.write('mse:{}, mae:{}'.format(mse, mae))
-        f.write('\n')
-        f.write('\n')
-        f.close()
+        with open(os.path.join(folder_path, 'result_long_term_forecast.txt'), 'a') as f:
+            f.write(setting + '\n')
+            f.write('mse:{}, mae:{}\n'.format(mse, mae))
+            f.write('\n')
 
         if save_result:
             # np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))

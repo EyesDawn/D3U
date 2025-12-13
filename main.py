@@ -7,7 +7,7 @@ from models.exp.exp_main import Exp_Main
 from utils import params_init
 
 if __name__ == '__main__':
-    setproctitle.setproctitle('D3U_thread')
+    setproctitle.setproctitle('D3U_main')
 
     args = params_init.get_args()
 

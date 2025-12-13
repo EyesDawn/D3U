@@ -51,5 +51,5 @@ python -u cond_model_main.py \
     --learning_rate $learning_rate \
     --lradj $lradj \
     --delta $delta \
-    --gpu 4
-    >>logs/iTrans_M_ETTh2_ALL.log
+    --gpu 4 \
+    2>&1 | tee -a ./logs/iTrans_M_ETTh2_ALL.log
