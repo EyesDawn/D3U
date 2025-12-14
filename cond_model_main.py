@@ -1,4 +1,5 @@
 import argparse
+import os
 import torch
 import numpy as np
 import random
@@ -114,14 +115,22 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    args.use_gpu = True if torch.cuda.is_available() and args.use_gpu else False
-    print("cuda available:", torch.cuda.is_available())
-
-    if args.use_gpu and args.use_multi_gpu:
+    # CRITICAL: Set CUDA_VISIBLE_DEVICES BEFORE any torch.cuda operations
+    # This must be done before torch.cuda.is_available() or any CUDA initialization
+    if args.use_gpu and not args.use_multi_gpu:
+        os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu)
+        print(f'Setting CUDA_VISIBLE_DEVICES={args.gpu}')
+    elif args.use_gpu and args.use_multi_gpu:
         args.devices = args.devices.replace(' ', '')
         device_ids = args.devices.split(',')
         args.device_ids = [int(id_) for id_ in device_ids]
         args.gpu = args.device_ids[0]
+        os.environ["CUDA_VISIBLE_DEVICES"] = args.devices
+        print(f'Setting CUDA_VISIBLE_DEVICES={args.devices}')
+
+    # Now it's safe to check CUDA availability
+    args.use_gpu = True if torch.cuda.is_available() and args.use_gpu else False
+    print("cuda available:", torch.cuda.is_available())
 
     if args.seed == -1:
         args.seed = np.random.randint(2147483647)

@@ -24,10 +24,10 @@ class Exp_Basic(object):
     def _acquire_device(self):
         if torch.cuda.is_available():
             if self.args.use_gpu:
-                os.environ["CUDA_VISIBLE_DEVICES"] = str(
-                    self.args.gpu) if not self.args.use_multi_gpu else self.args.devices
+                # CUDA_VISIBLE_DEVICES is already set in main.py before any CUDA operations
+                # So we always use cuda:0 which maps to the specified physical GPU
                 device = torch.device('cuda:0')
-                print('Use GPU: cuda:{}'.format(self.args.gpu))
+                print('Use GPU: cuda:0 (Physical GPU {} via CUDA_VISIBLE_DEVICES)'.format(self.args.gpu))
             else:
                 device = torch.device('cpu')
                 print('Use CPU')

@@ -1,19 +1,19 @@
 #!/bin/bash
 
-### ETTm2 Dataset - Two-stage Training ###
+### Weather Dataset - Two-stage Training ###
 ### Stage 1: Pre-training with cond_model_main.py (train iTransformer) ###
 ### Stage 2: Main training with main.py (train diffusion model) ###
 
 ### Usage:
-### ./ettm2.sh             # Run both stages (pre-training + main training)
-### ./ettm2.sh main        # Skip pre-training, run only main training
-### ./ettm2.sh pretrain    # Run only pre-training
+### ./weather.sh             # Run both stages (pre-training + main training)
+### ./weather.sh main        # Skip pre-training, run only main training
+### ./weather.sh pretrain    # Run only pre-training
 
 # Parse command line argument
 MODE=${1:-"both"}  # Default to "both" if no argument provided
 
 echo "========================================="
-echo "Starting ETTm2 Training"
+echo "Starting Weather Training"
 echo "Mode: $MODE"
 if [ "$MODE" = "both" ]; then
     echo "Stage 1: Pre-training iTransformer (cond_model_main.py)"
@@ -33,17 +33,17 @@ echo "========================================="
 seq_len=96
 label_len=48
 pred_len=192
-root_path='./dataset/ETT-small/'
-data_path='ETTm2.csv'
-dataset='ETTm2'
-model_id_name='ETTm2'
+root_path='./dataset/weather/'
+data_path='weather.csv'
+dataset='custom'
+model_id_name='weather'
 random_seed=2021
 
 ## Model Configs ##
 model_name='iTransformer'
-enc_in=7
-dec_in=7
-c_out=7
+enc_in=21
+dec_in=21
+c_out=21
 
 ## Stage 1: Pre-training Parameters (iTransformer) ##
 d_model=128
@@ -66,11 +66,11 @@ batch_size_main=128
 test_batch_size_main=64
 
 ## GPU Config ##
-gpu_id=2
+gpu_id=4
 
 ## Log Paths ##
-pretrain_log="./logs/iTrans_M_ETTm2_pretrain.log"
-main_log="./logs/D3U/iTransformer/ETTm2_main.log"
+pretrain_log="./logs/iTrans_M_Weather_pretrain.log"
+main_log="./logs/D3U/iTransformer/Weather_main.log"
 
 # Create log directories if they don't exist
 mkdir -p ./logs/D3U/iTransformer/
@@ -220,3 +220,4 @@ fi
 echo "========================================="
 echo "Training Complete!"
 echo "========================================="
+

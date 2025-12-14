@@ -93,9 +93,9 @@ class Exp_Main(Exp_Basic):
         cond_pred_model = self.cond_model_dict[self.args.model].Model(self.args).float()
         condition_path=os.path.join(self.args.pretrain_checkpoints, self.args.model)
         if self.args.decomposition:
-           best_condition_model_path = condition_path +'/' +str('decomposition') +'/' + self.args.data_name+'/' +str(self.args.pred_len)+ '/'+ 'checkpoint.pth'  # 指定模型检查点的路径
+           best_condition_model_path = condition_path +'/' +str('decomposition') +'/' + self.args.data+'/' +str(self.args.pred_len)+ '/'+ 'checkpoint.pth'  # 指定模型检查点的路径
         else:
-           best_condition_model_path = condition_path+'/' +str('all') +'/' + self.args.data_name+'/' +str(self.args.pred_len)+ '/'+ 'checkpoint.pth'  # 指定模型检查点的路径
+           best_condition_model_path = condition_path+'/' +str('all') +'/' + self.args.data+'/' +str(self.args.pred_len)+ '/'+ 'checkpoint.pth'  # 指定模型检查点的路径
         print(best_condition_model_path)
 
         if self.args.from_scrach==False:
@@ -450,9 +450,9 @@ class Exp_Main(Exp_Basic):
                 torch.load(os.path.join('checkpoints/' + setting, 'checkpoint.pth'), map_location=self.device))
             condition_path=os.path.join(self.args.pretrain_checkpoints, self.args.model)
             if self.args.decomposition:
-               best_condition_model_path = condition_path +'/' +str('decomposition') +'/' + self.args.data_name+'/' +str(self.args.pred_len)+ '/'+ 'checkpoint.pth'  # 指定模型检查点的路径
+               best_condition_model_path = condition_path +'/' +str('decomposition') +'/' + self.args.data+'/' +str(self.args.pred_len)+ '/'+ 'checkpoint.pth'  # 指定模型检查点的路径
             else:
-                best_condition_model_path = condition_path+'/' +str('all') +'/' + self.args.data_name+'/' +str(self.args.pred_len)+ '/'+ 'checkpoint.pth'  # 指定模型检查点的路径
+                best_condition_model_path = condition_path+'/' +str('all') +'/' + self.args.data+'/' +str(self.args.pred_len)+ '/'+ 'checkpoint.pth'  # 指定模型检查点的路径
        
             print(best_condition_model_path)
             
