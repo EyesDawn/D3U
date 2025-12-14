@@ -8,6 +8,7 @@
 ### ./weather.sh             # Run both stages (pre-training + main training)
 ### ./weather.sh main        # Skip pre-training, run only main training
 ### ./weather.sh pretrain    # Run only pre-training
+### ./weather.sh test        # Run only testing (skip training, load checkpoint)
 
 # Parse command line argument
 MODE=${1:-"both"}  # Default to "both" if no argument provided
@@ -22,9 +23,11 @@ elif [ "$MODE" = "main" ]; then
     echo "Stage: Main training only (using existing pre-trained model)"
 elif [ "$MODE" = "pretrain" ]; then
     echo "Stage: Pre-training only"
+elif [ "$MODE" = "test" ]; then
+    echo "Stage: Testing only (load existing checkpoint)"
 else
     echo "ERROR: Invalid mode '$MODE'"
-    echo "Usage: $0 [both|main|pretrain]"
+    echo "Usage: $0 [both|main|pretrain|test]"
     exit 1
 fi
 echo "========================================="
@@ -63,7 +66,7 @@ d_model_d=128
 batch_size_pretrain=16
 test_batch_size_pretrain=1
 batch_size_main=128
-test_batch_size_main=64
+test_batch_size_main=32
 
 ## GPU Config ##
 gpu_id=4
@@ -217,7 +220,84 @@ if [ "$MODE" = "both" ] || [ "$MODE" = "main" ]; then
     fi
 fi
 
+# Stage 3: Testing Only (only if mode is "test")
+if [ "$MODE" = "test" ]; then
+    echo ""
+    echo "========================================="
+    echo "Testing Only Mode Starting..."
+    echo "========================================="
+    
+    # Check if pre-trained model exists
+    pretrained_model="./pretrain_checkpoints/$model_name/all/$dataset/$pred_len/checkpoint.pth"
+    if [ ! -f "$pretrained_model" ]; then
+        echo "ERROR: Pre-trained model not found at: $pretrained_model"
+        echo "Please run pre-training first with: $0 pretrain"
+        exit 1
+    fi
+    echo "Using pre-trained model: $pretrained_model"
+    
+    # Note: Remove --is_training to skip training and only test
+    python -u main.py \
+        --seed $random_seed \
+        --root_path $root_path \
+        --data_path $data_path \
+        --model_id ${model_id_name}_${seq_len}_${pred_len} \
+        --model $model_name \
+        --data $dataset \
+        --data_name $model_id_name \
+        --features M \
+        --seq_len $seq_len \
+        --label_len $label_len \
+        --pred_len $pred_len \
+        --enc_in $enc_in \
+        --dec_in $dec_in \
+        --c_out $c_out \
+        --e_layers_c $e_layers_c \
+        --n_heads_c $n_heads_c \
+        --d_model_c $d_model_c \
+        --d_ff $d_ff_main \
+        --dropout 0.2 \
+        --fc_dropout 0.2 \
+        --head_dropout 0 \
+        --depth 1 \
+        --d_model_d $d_model_d \
+        --num_workers 4 \
+        --itr 1 \
+        --train_epochs 100 \
+        --timesteps 100 \
+        --batch_size $batch_size_main \
+        --test_batch_size $test_batch_size_main \
+        --des 'Exp' \
+        --lradj 'type1' \
+        --denoise_model 'PatchDN' \
+        --kernel_size 15 \
+        --fourier_factor 1.0 \
+        --svq 1 \
+        --wFFN 0 \
+        --num_codebook 1 \
+        --codebook_size 256 \
+        --type_sample 'DPM_solver' \
+        --DPMsolver_step 20 \
+        --gpu $gpu_id \
+        --parameterization "x_start" \
+        --bias \
+        2>&1 | tee -a $main_log
+    
+    # Check if testing was successful
+    if [ $? -eq 0 ]; then
+        echo "========================================="
+        echo "Testing Completed Successfully!"
+        echo "========================================="
+        echo "Test log: $main_log"
+    else
+        echo "========================================="
+        echo "ERROR: Testing Failed!"
+        echo "========================================="
+        exit 1
+    fi
+fi
+
 echo "========================================="
-echo "Training Complete!"
+echo "Process Complete!"
 echo "========================================="
 
